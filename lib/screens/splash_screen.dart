@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/dashboard_screen.dart';
 import 'package:match_aura/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +28,11 @@ class _SplashScreenState extends State<SplashScreen> {
               const SizedBox(height: 10),
               const Text(
                 "Match Aura",
-                style: TextStyle(fontSize: 36, color: Colors.white),
+                style: TextStyle(
+                            fontSize: 36,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
               ),
               const SizedBox(height: 425),
 
