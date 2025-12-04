@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:match_aura/screens/dashboard_screen.dart';
+import 'package:match_aura/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context)=>const DashboardScreen()),
+                    MaterialPageRoute(builder: (context)=>const SignupScreen()),
                     );
                 },
                 style: ElevatedButton.styleFrom(
