@@ -77,9 +77,6 @@ class OnBoarding extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // ----------------------
-              // Responsive Image
-              // ----------------------
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Center(
