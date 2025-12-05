@@ -11,6 +11,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double dialogWidth = screenWidth > 600 ? 190 : screenWidth * 0.4;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -38,13 +41,13 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   Image.asset(
                     "assets/images/design.png",
-                    width: 190,
+                    width: dialogWidth,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(width: 20),
                   Image.asset(
                     "assets/images/design2.png",
-                    width: 174,
+                    width:dialogWidth,
                     fit: BoxFit.contain,
                   ),
                 ],

@@ -12,16 +12,19 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double dialogWidth = screenWidth > 600 ? 500 : screenWidth * 0.85;
     return Scaffold(
       body: Container(
         width: double.infinity,
-        height: double.infinity,
+        height: screenHeight,
         color: Colors.white,
         child: Column(
           children: [
             Container(
               width: double.infinity,
-              height: 700,
+              height: screenHeight*0.85,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(255, 146, 146, 146),
@@ -43,15 +46,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Image.asset(
                         "assets/images/image.png",
                         fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
                       ),
                     ),
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SizedBox(height: 35),
+                          const SizedBox(height: 70),
                           Image.asset('assets/images/logo.png', width: 140),
                           const SizedBox(height: 10),
                           const Text(
@@ -62,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const SizedBox(height: 70),
+                          SizedBox(height: 100,),
                           const Text(
                             "Swipe Right",
                             style: TextStyle(
@@ -79,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 50),
+                          const Spacer(),
                           _buildSocialLoginButton(
                             text: 'Login with Google',
                             icon: Icons.g_mobiledata,
@@ -95,6 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             logocolor: Colors.blue,
                             onTap: () {},
                           ),
+                          SizedBox(height: 20,)
                         ],
                       ),
                     ),
@@ -102,7 +104,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const Spacer(),
             _buildSocialLoginButton(
               text: 'Login with Phone',
               icon: Icons.phone,
@@ -112,6 +114,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 _showPhoneNumberPopup();
               },
             ),
+            SizedBox(height: 40,)
+
           ],
         ),
       ),
