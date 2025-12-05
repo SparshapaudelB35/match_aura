@@ -31,9 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(fontSize: 36, color: Colors.white),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 100),
 
-              // ===== TWO IMAGES IN A ROW BELOW "MATCH AURA" =====
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
