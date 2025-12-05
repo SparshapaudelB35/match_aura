@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:match_aura/screens/on_boarding1.dart';
-import 'package:match_aura/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,37 +28,53 @@ class _SplashScreenState extends State<SplashScreen> {
               const SizedBox(height: 10),
               const Text(
                 "Match Aura",
-                style: TextStyle(
-                            fontSize: 36,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
+                style: TextStyle(fontSize: 36, color: Colors.white),
               ),
-              const SizedBox(height: 425),
+
+              const SizedBox(height: 20),
+
+              // ===== TWO IMAGES IN A ROW BELOW "MATCH AURA" =====
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/design.png",
+                    width: 190,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(width: 20),
+                  Image.asset(
+                    "assets/images/design2.png",
+                    width: 180,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+
+              const Spacer(),
 
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context)=>const OnBoarding1()),
-                    );
+                    MaterialPageRoute(builder: (context) => const OnBoarding1()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(width: 10,),
                     const Text(
                       "Start Matching",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -85,7 +100,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+
+              const SizedBox(height: 60),
             ],
           ),
         ),
