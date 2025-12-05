@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:match_aura/screens/on_boarding1.dart';
 import 'package:match_aura/screens/signup_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context)=>const SignupScreen()),
+                    MaterialPageRoute(builder: (context)=>const OnBoarding1()),
                     );
                 },
                 style: ElevatedButton.styleFrom(
