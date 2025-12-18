@@ -21,113 +21,149 @@ class OnBoarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isTablet = screenWidth > 600;
-
-    // Max width and height for tablet
-    final tabletMaxWidth = 500.0;
-    final tabletMaxHeight = 300.0;
-
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF4A00E0), Color(0xFF8E2DE2), Color(0xFFDA22FF)],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isTablet = constraints.maxWidth >= 600;
+          final double screenHeight = constraints.maxHeight;
 
-              // Logo
-              Image.asset(logoPath, height: 140, fit: BoxFit.contain),
-              const SizedBox(height: 10),
+          // Sizes dynamically based on tablet or mobile
+          final double logoSize = isTablet ? screenHeight * 0.12 : 100;
+          final double appNameSize = isTablet ? 34 : 28;
+          final double titleSize = isTablet ? 26 : 22;
+          final double subtitleSize = isTablet ? 18 : 14;
 
-              const Text(
-                "Match Aura",
-                style: TextStyle(fontSize: 36, color: Colors.white),
+          final double imageMaxWidth = isTablet ? 480 : constraints.maxWidth * 0.9;
+          final double imageMaxHeight =
+              isTablet ? screenHeight * 0.32 : screenHeight * 0.28;
+
+          return Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF4A00E0),
+                  Color(0xFF8E2DE2),
+                  Color(0xFFDA22FF),
+                ],
               ),
-
-              const SizedBox(height: 20),
-
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFEE00),
-                ),
-              ),
-              const SizedBox(height: 5),
-
-              Text(
-                subtitle,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFEE00),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: isTablet ? tabletMaxWidth : double.infinity,
-                      maxHeight: isTablet ? tabletMaxHeight : screenHeight * 0.35,
-                    ),
-                    child: AspectRatio(
-                      aspectRatio: 3 / 3, // adjust according to your image
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 3,
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
+            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          logoPath,
+                          height: logoSize,
+                          fit: BoxFit.contain,
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            onboardingImagePath,
-                            fit: BoxFit.contain,
+                        SizedBox(height: isTablet ? 8 : 6),
+                        Text(
+                          "Match Aura",
+                          style: TextStyle(
+                            fontSize: appNameSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: isTablet ? 40 : 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: titleSize,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFFFFEE00),
+                            ),
+                          ),
+                          SizedBox(height: isTablet ? 10 : 6),
+                          Text(
+                            subtitle,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: subtitleSize,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFFFEE00),
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: imageMaxWidth,
+                            maxHeight: imageMaxHeight,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.15),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(
+                                onboardingImagePath,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
+
+                  
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24)
+                          .copyWith(bottom: isTablet ? 20 : 14),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: MainButton(
+                          text: buttontext,
+                          onPressed: onNext,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-
-              const Spacer(),
-
-              // Button at bottom
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: MainButton(
-                  text: buttontext,
-                  onPressed: onNext,
-                ),
-              ),
-
-              const SizedBox(height: 13),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
