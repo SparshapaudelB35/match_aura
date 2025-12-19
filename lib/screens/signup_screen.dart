@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:match_aura/screens/home_screen.dart';
+import 'package:match_aura/screens/profiledetail.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -358,15 +358,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Close the OTP dialog, then replace the current route with HomeScreen
-                          Navigator.pop(context);
-                          Future.microtask(() {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (_) => const HomeScreen(),
-                              ),
-                            );
-                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ProfileDetailsPage(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 15),
