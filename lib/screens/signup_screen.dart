@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:match_aura/screens/home_screen.dart';
+import 'package:match_aura/screens/profiledetail.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -361,7 +361,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const HomeScreen(),
+                              builder: (_) => const ProfileDetailsPage(),
                             ),
                           );
                         },
