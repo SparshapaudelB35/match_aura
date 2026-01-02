@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:match_aura/app/routes/app_routes.dart';
 import 'package:match_aura/core/utils/snackbar_utils.dart';
 import 'package:match_aura/features/auth/presentation/pages/login_page.dart';
+import 'package:match_aura/features/auth/presentation/state/auth_state.dart';
+import 'package:match_aura/features/auth/presentation/view_model/auth_view_model.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -21,7 +24,6 @@ class _SignupPageState extends State<SignupPage> {
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  bool _isLoading = false;
 
   String _selectedCountryCode = '+977';
   final List<Map<String, String>> _countryCodes = [
@@ -52,23 +54,31 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        AppRoutes.pushReplacement(context, const LoginPage());
-      }
+      ref.read(authViewModelProvider.notifier)
+      .register(fullName: _nameController.text,
+       email: _emailController.text,
+        username: _nameController.text.trim().split('@').first,
+        password: _passwordController.text,
+        phoneNumber: '$_selectedCountryCode${_phoneController.text}'
+         );
     }
   }
 
+  
+  
   @override
   Widget build(BuildContext context) {
+    final authstate = ref.watch(authViewModelProvider);
+    final isLoading = authstate.status == AuthStatus.loading;
+    ref.listen<AuthState>(authViewModelProvider,(previous,next){
+      if(next.status == AuthStatus.error){
+        SnackbarUtils.showError(context, next.errorMessage ?? 'Registration Failed');
+      }else if(next.status== AuthStatus.registered){
+        SnackbarUtils.showSuccess(context, next.errorMessage ?? 'Registration Sucessfull');
+      }
+    });
+
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -113,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
 
                         const SizedBox(height: 15),
                         Text(
-                          'Join Us Today',
+                          'Join Us',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -573,7 +583,8 @@ class _SignupPageState extends State<SignupPage> {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _handleSignup,
+                      onPressed: isLoading ? null : _handleSignup,
+                      
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
@@ -582,7 +593,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         elevation: 5,
                       ),
-                      child: _isLoading
+                      child: isLoading
                           ? const CircularProgressIndicator(
                               color: Colors.redAccent,
                             )
