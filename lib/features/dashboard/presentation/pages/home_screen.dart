@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/connection_screen.dart';
-import 'package:match_aura/screens/likes_screen.dart';
-import 'package:match_aura/screens/message_screen.dart';
-import 'package:match_aura/screens/profile_expand.dart';
-import 'package:match_aura/screens/profile_screen.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/connection_screen.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/likes_screen.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/message_screen.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/profile_expand.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/profile_screen.dart';
 import 'package:match_aura/widget/customnavigation_widget.dart';
 
 class HomeContent extends StatelessWidget {

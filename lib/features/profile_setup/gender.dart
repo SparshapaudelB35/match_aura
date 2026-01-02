@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/interest_selection.dart';
+import 'package:match_aura/features/profile_setup/presentation/pages/interest_selection.dart';
 
 class SelectGenderPage extends StatefulWidget {
   const SelectGenderPage({super.key});

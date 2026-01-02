@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/on_boarding1.dart';
+import 'package:match_aura/features/onboarding/presentation/pages/on_boarding1.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/gender.dart';
+import 'package:match_aura/features/profile_setup/presentation/pages/gender.dart';
 
 class ProfileDetailsPage extends StatefulWidget {
   const ProfileDetailsPage({super.key});

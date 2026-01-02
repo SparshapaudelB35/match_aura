@@ -11,8 +11,8 @@ class ProfileDetailExpandScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Removed the isolated Positioned widget from here as it caused an error
-            _buildHeaderImage(context), // Pass context to use Navigator
+            
+            _buildHeaderImage(context), 
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -75,7 +75,7 @@ class ProfileDetailExpandScreen extends StatelessWidget {
               image: AssetImage('assets/images/imagedemo.jpg'),
               fit: BoxFit.contain,
             ),
-            border: Border.all(color: Colors.blue, width: 2),
+            
           ),
         ),
 

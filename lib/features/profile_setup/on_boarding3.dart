@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/signup_screen.dart';
+import 'package:match_aura/features/profile_setup/signup_screen.dart';
 import 'package:match_aura/widget/onboarding_widget.dart';
 
 class OnBoarding3 extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:match_aura/screens/profiledetail.dart';
+import 'package:match_aura/features/profile_setup/presentation/pages/profiledetail.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
