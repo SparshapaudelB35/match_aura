@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/features/profile_setup/signup_screen.dart';
-import 'package:match_aura/widget/onboarding_widget.dart';
+import 'package:match_aura/features/auth/presentation/pages/login_page.dart';
+
+import 'package:match_aura/features/onboarding/presentation/widget/onboarding_widget.dart';
 
 class OnBoarding3 extends StatefulWidget {
   const OnBoarding3({super.key});
@@ -21,7 +22,7 @@ class _OnBoarding3State extends State<OnBoarding3> {
       onNext: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const SignupScreen()),
+          MaterialPageRoute(builder: (_) => const LoginPage()),
         );
       },
     );

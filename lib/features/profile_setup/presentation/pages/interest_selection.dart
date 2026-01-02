@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:match_aura/screens/home_screen.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/home_screen.dart';
+
 
 
 class InterestsPage extends StatefulWidget {

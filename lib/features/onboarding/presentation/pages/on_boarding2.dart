@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:match_aura/features/onboarding/presentation/pages/on_boarding3.dart';
-import 'package:match_aura/widget/onboarding_widget.dart';
+import 'package:match_aura/features/onboarding/presentation/widget/onboarding_widget.dart';
 
 class OnBoarding2 extends StatefulWidget {
   const OnBoarding2({super.key});

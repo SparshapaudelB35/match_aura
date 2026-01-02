@@ -4,7 +4,7 @@ import 'package:match_aura/features/dashboard/presentation/pages/likes_screen.da
 import 'package:match_aura/features/dashboard/presentation/pages/message_screen.dart';
 import 'package:match_aura/features/dashboard/presentation/pages/profile_expand.dart';
 import 'package:match_aura/features/dashboard/presentation/pages/profile_screen.dart';
-import 'package:match_aura/widget/customnavigation_widget.dart';
+import 'package:match_aura/features/dashboard/presentation/widget/customnavigation_widget.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
