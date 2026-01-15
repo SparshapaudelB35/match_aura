@@ -13,23 +13,29 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  bool _isLoggedIn = false;
+  bool _isCheckingSession = true;
 
   @override
   void initState() {
     super.initState();
-    _navigateToNext();
+    _checkSessionAndNavigate();
   }
 
-  Future<void> _navigateToNext() async {
+  Future<void> _checkSessionAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    //check if user is already logged in
-    final UserSessionService = ref.read(UserSessionServiceProvider);
-    final isLoggedIn = UserSessionService.isLoggedIn();
-    if(isLoggedIn){
+
+    final userSessionService = ref.read(UserSessionServiceProvider);
+    final isLoggedIn = userSessionService.isLoggedIn();
+
+    setState(() {
+      _isLoggedIn = isLoggedIn;
+      _isCheckingSession = false;
+    });
+
+    if (isLoggedIn) {
       AppRoutes.pushReplacement(context, const HomeScreen());
-    }else{
-      AppRoutes.pushReplacement(context, const OnBoarding1());
     }
   }
 
@@ -61,33 +67,30 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             child: SafeArea(
               child: Column(
                 children: [
+                  // LOGO
                   Expanded(
                     flex: 2,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: isTablet ? 16 : 12,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/logo.png',
-                            width: logoSize,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          width: logoSize,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Match Aura",
+                          style: TextStyle(
+                            fontSize: titleFontSize,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Match Aura",
-                            style: TextStyle(
-                              fontSize: titleFontSize,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
 
+                  // IMAGES
                   Expanded(
                     flex: 3,
                     child: Padding(
@@ -100,80 +103,107 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           Image.asset(
                             "assets/images/design.png",
                             width: imageWidth,
-                            fit: BoxFit.contain,
                           ),
                           SizedBox(width: isTablet ? 28 : 20),
                           Image.asset(
                             "assets/images/design2.png",
                             width: imageWidth,
-                            fit: BoxFit.contain,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  
+
+                  // LOADING BAR OR BUTTON
                   Expanded(
                     flex: 2,
                     child: Padding(
                       padding: EdgeInsets.only(
                         bottom: isTablet ? 24 : 16,
+                        left: isTablet ? 48 : 24,
+                        right: isTablet ? 48 : 24,
                       ),
                       child: Align(
                         alignment: Alignment.center,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const OnBoarding1(),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: isTablet ? 24 : 16,
-                              vertical: isTablet ? 14 : 10,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            elevation: 6,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "Start Matching",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: isTablet ? 22 : 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Container(
-                                width: isTablet ? 56 : 48,
-                                height: isTablet ? 56 : 48,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFF4A00E0),
-                                      Color(0xFF8E2DE2),
-                                      Color(0xFFDA22FF),
+                        child: _isCheckingSession
+                            ? const SizedBox.shrink()
+                            : _isLoggedIn
+                                ? Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      LinearProgressIndicator(
+                                        minHeight: 6,
+                                        backgroundColor:
+                                            Colors.white30,
+                                        valueColor:
+                                            AlwaysStoppedAnimation(
+                                          Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(height: 12),
+                                      
                                     ],
+                                  )
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const OnBoarding1(),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            isTablet ? 24 : 16,
+                                        vertical:
+                                            isTablet ? 14 : 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18),
+                                      ),
+                                      elevation: 6,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "Start Matching",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                isTablet ? 22 : 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Container(
+                                          width: isTablet ? 56 : 48,
+                                          height: isTablet ? 56 : 48,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            gradient:
+                                                const LinearGradient(
+                                              colors: [
+                                                Color(0xFF4A00E0),
+                                                Color(0xFF8E2DE2),
+                                                Color(0xFFDA22FF),
+                                              ],
+                                            ),
+                                          ),
+                                          child: const Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                child: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                   ),
