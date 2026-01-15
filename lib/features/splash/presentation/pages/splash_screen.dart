@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:match_aura/app/routes/app_routes.dart';
+import 'package:match_aura/core/services/storage/user_session_service.dart';
+import 'package:match_aura/features/dashboard/presentation/pages/home_screen.dart';
 import 'package:match_aura/features/onboarding/presentation/pages/on_boarding1.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNext();
+  }
+
+  Future<void> _navigateToNext() async {
+    await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) return;
+    //check if user is already logged in
+    final UserSessionService = ref.read(UserSessionServiceProvider);
+    final isLoggedIn = UserSessionService.isLoggedIn();
+    if(isLoggedIn){
+      AppRoutes.pushReplacement(context, const HomeScreen());
+    }else{
+      AppRoutes.pushReplacement(context, const OnBoarding1());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
