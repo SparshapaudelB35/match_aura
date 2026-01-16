@@ -1,7 +1,7 @@
 class ApiEndpoints{
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://192.168.1.68:3000/api/v1';
+  static const String baseUrl = 'http://192.168.1.64:3000/api/';
   // Base URL - change this for production
   // static const String baseUrl = 'http://10.0.2.2:3000/api/v1';
   //static const String baseUrl = 'http://localhost:3000/api/v1';
@@ -13,7 +13,7 @@ class ApiEndpoints{
 
   // user Endpoints
 
-  static const String users = '/users';
+  static const String users = '/users/signup';
   static const String userLogin = '/users/login';
   static String userById(String id)=> '/users/$id';
   static String userPhoto(String id)=> '/users/$id/photo';

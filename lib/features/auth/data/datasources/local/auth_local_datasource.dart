@@ -30,25 +30,25 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
   }
 
   @override
-  Future<AuthHiveModel?> login(String email, String password) async {
-    try {
-      final user = await _hiveService.login(email, password);
-      //save user data in shared prefs
-      if(user != null){
-        await _userSessionService.saveUserSession(
-          userId: user.authId!,
-          email: user.email,
-          username: user.username,
-          fullName: user.fullName,
-          phoneNumber: user.phoneNumber,
-          profilePicture: user.profilePicture?? '',
-        );
-      }
-      return user;
-    } catch (e) {
-      return Future.value(null);
+Future<AuthHiveModel?> login(String email, String password) async {
+  try {
+    final user = await _hiveService.login(email, password);
+    if (user != null) {
+      // Save user session including JWT
+      await _userSessionService.saveUserSession(
+        userId: user.authId ?? '',
+        email: user.email,
+        username: user.username,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+      );
     }
+    return user;
+  } catch (e) {
+    return null;
   }
+}
 
   @override
   Future<bool> logout() async {

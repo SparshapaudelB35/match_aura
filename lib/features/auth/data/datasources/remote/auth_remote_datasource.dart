@@ -30,40 +30,57 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource{
   }
 
   @override
-  Future<AuthApiModel?> login(String email, String password) async{
-    final response = await _apiClient.post(
-      ApiEndpoints.userLogin,
-      data: {
-        "email": email,
-        "password": password,
-      }
+Future<AuthApiModel?> login(String email, String password) async {
+  final response = await _apiClient.post(
+    ApiEndpoints.userLogin, // Use the login endpoint, not users
+    data: {
+      "email": email,
+      "password": password,
+    },
+  );
+
+  if (response.data['success'] == true) {
+    final data = response.data['data'] as Map<String, dynamic>;
+    final user = AuthApiModel.fromJson(data);
+
+    // Save user session including JWT token
+    final token = response.data['token'] as String;
+    await _userSessionService.saveUserSession(
+      userId: user.id!,
+      email: user.email,
+      username: user.username,
+      fullName: user.fullName,
+      phoneNumber: user.phoneNumber,
+      profilePicture: user.profilePicture,
+      token: token, // <-- save the token here
     );
 
-    if(response.data['success'] == true){
-      final data = response.data['data'] as Map<String, dynamic>;
-      final user = AuthApiModel.fromJson(data);
-
-      await _userSessionService.saveUserSession(
-        userId: user.id!,
-        email: user.email,
-        username: user.username,
-        fullName: user.fullName,
-        phoneNumber: user.phoneNumber);
-      return user;
-    }
-    return null;
-  }
-
-  @override
-  Future<AuthApiModel> register(AuthApiModel user) async {
-    final response = await _apiClient.post(ApiEndpoints.users, data: user.toJson(),
-    );
-
-    if(response.data['success']== true){
-      final data = response.data['data'] as Map<String, dynamic>;
-      final registeredUser = AuthApiModel.fromJson(data);
-      return registeredUser;
-    }
     return user;
   }
+  return null;
+}
+
+
+  @override
+Future<AuthApiModel> register(AuthApiModel user) async {
+  // Call backend API
+  final response = await _apiClient.post(
+    ApiEndpoints.users, 
+    data: user.toJson(),
+  );
+
+  // Check if registration was successful
+  if (response.data['success'] == true) {
+    // Extract user data from response
+    final data = response.data['data'] as Map<String, dynamic>;
+    final registeredUser = AuthApiModel.fromJson(data);
+
+    // Return the registered user object
+    return registeredUser;
+  }
+
+  // If registration failed, just return the input user (or handle error)
+  return user;
+}
+
 }
