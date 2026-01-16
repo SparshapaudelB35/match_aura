@@ -76,12 +76,10 @@ class HomeContent extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Transform.scale(
-                                  scale:
-                                      1.1, 
+                                  scale: 1.1,
                                   child: Image.asset(
                                     'assets/images/imagedemo.jpg',
-                                    fit: BoxFit
-                                        .contain, 
+                                    fit: BoxFit.contain,
                                     width: double.infinity,
                                     height: double.infinity,
                                     alignment: Alignment.center,
@@ -252,9 +250,12 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 0),
         child: _pages[_selectedIndex],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onItemSelected: (index) => setState(() => _selectedIndex = index),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: CustomBottomNavigationBar(
+          selectedIndex: _selectedIndex,
+          onItemSelected: (index) => setState(() => _selectedIndex = index),
+        ),
       ),
     );
   }
