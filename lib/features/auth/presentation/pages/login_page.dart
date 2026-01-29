@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:match_aura/app/routes/app_routes.dart';
+import 'package:match_aura/core/storage/app_storage.dart';
 import 'package:match_aura/core/utils/snackbar_utils.dart';
 import 'package:match_aura/features/auth/presentation/pages/signup_page.dart';
 import 'package:match_aura/features/auth/presentation/state/auth_state.dart';
@@ -13,10 +14,10 @@ class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  ConsumerState<LoginPage> createState() => _SignupScreenState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupScreenState extends ConsumerState<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -32,9 +33,12 @@ class _SignupScreenState extends ConsumerState<LoginPage> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      await ref.read(authViewModelProvider.notifier)
-      .login(email: _emailController.text.trim(), password: _passwordController.text.trim());
-
+      await ref
+          .read(authViewModelProvider.notifier)
+          .login(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
     }
   }
 
@@ -43,13 +47,21 @@ class _SignupScreenState extends ConsumerState<LoginPage> {
     final size = MediaQuery.of(context).size;
     final bool isTablet = size.width > 600;
 
-    ref.listen<AuthState>(authViewModelProvider,(previous,next){
-      if(next.status==AuthStatus.authenticated){
-        AppRoutes.pushReplacement(context, HomeScreen());
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) async {
+      if (next.status == AuthStatus.authenticated && next.authEntity != null) {
+        final userId = next.authEntity!.authId; // <-- get MongoDB _id
+        final hasLoggedIn = await AppStorage.hasLoggedInOnce(userId!);
 
-      }else if(next.status ==AuthStatus.error && next.errorMessage != null){
+        if (!hasLoggedIn) {
+          // First-time login for this user
+          await AppStorage.setLoggedInOnce(userId);
+          AppRoutes.pushReplacement(context, ProfileDetailsPage());
+        } else {
+          // Already logged in user
+          AppRoutes.pushReplacement(context, HomeScreen());
+        }
+      } else if (next.status == AuthStatus.error && next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
-
       }
     });
 
@@ -281,7 +293,6 @@ class _SignupScreenState extends ConsumerState<LoginPage> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    
                                   ),
                                 ),
                               ),
@@ -320,7 +331,10 @@ class _SignupScreenState extends ConsumerState<LoginPage> {
                               children: [
                                 Text(
                                   "Don't have an account?",
-                                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -330,7 +344,7 @@ class _SignupScreenState extends ConsumerState<LoginPage> {
                                     'Sign Up',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.purpleAccent
+                                      color: Colors.purpleAccent,
                                     ),
                                   ),
                                 ),
