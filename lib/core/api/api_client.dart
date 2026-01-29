@@ -97,8 +97,8 @@ class _AuthInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // Skip auth for public endpoints
     final publicEndpoints = [
-      ApiEndpoints.users,
-      ApiEndpoints.users, // signup endpoint if needed
+      ApiEndpoints.users,      // signup endpoint
+      ApiEndpoints.userLogin,  // login endpoint
     ];
 
     final isPublic = publicEndpoints.any((endpoint) => options.path.endsWith(endpoint));

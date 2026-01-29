@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:match_aura/app/routes/app_routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:match_aura/core/services/storage/user_session_service.dart';
-import 'package:match_aura/features/splash/presentation/pages/splash_screen.dart';
+import 'package:match_aura/features/auth/presentation/pages/login_page.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -12,6 +12,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               final userSessionService = ref.read(UserSessionServiceProvider);
               await userSessionService.clearUserSession();
               // Navigate to splash screen
-              AppRoutes.pushAndRemoveUntil(context, const SplashScreen());
+              AppRoutes.pushAndRemoveUntil(context, const LoginPage());
             },
             child: Text(
               'Logout',
