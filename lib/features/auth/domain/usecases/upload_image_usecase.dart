@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:match_aura/core/error/failures.dart';
@@ -6,20 +9,19 @@ import 'package:match_aura/features/auth/data/repositories/auth_repository.dart'
 import 'package:match_aura/features/auth/domain/repositories/auth_repository.dart';
 
 
-// Create Provider
-final logoutUsecaseProvider = Provider<LogoutUsecase>((ref) {
+final uploadPhotoUsecaseProvider = Provider<UploadPhotoUsecase>((ref) {
   final authRepository = ref.read(authRepositoryProvider);
-  return LogoutUsecase(authRepository: authRepository);
+  return UploadPhotoUsecase(authRepository: authRepository);
 });
 
-class LogoutUsecase implements UsecaseWithoutParams<bool> {
+class UploadPhotoUsecase implements UsecaseWithParams<String, File> {
   final IAuthRepository _authRepository;
 
-  LogoutUsecase({required IAuthRepository authRepository})
-    : _authRepository = authRepository;
+  UploadPhotoUsecase({required IAuthRepository authRepository})
+      : _authRepository = authRepository;
 
   @override
-  Future<Either<Failure, bool>> call() {
-    return _authRepository.logout();
+  Future<Either<Failure, String>> call(File photo) {
+    return _authRepository.UploadImage(photo);
   }
 }

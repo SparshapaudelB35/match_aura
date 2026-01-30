@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,15 +104,18 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, bool>> register(AuthEntity user) async {
-    if (await _networkInfo.isConnected) {
+    final isConnected = await _networkInfo.isConnected;
+    
+    if (isConnected) {
       try {
         final apiModel = AuthApiModel.fromEntity(user);
         await _authRemoteDataSource.register(apiModel);
         return const Right(true);
       } on DioException catch (e) {
+        final errorMsg = e.response?.data['message'] ?? e.message ?? 'Registration failed';
         return Left(
           ApiFailure(
-            message: e.response?.data['message'] ?? 'Registration failed',
+            message: errorMsg,
             statusCode: e.response?.statusCode,
           ),
         );
@@ -132,6 +137,20 @@ class AuthRepository implements IAuthRepository {
       } catch (e) {
         return Left(LocalDatabaseFailure(message: e.toString()));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> UploadImage(File image) async{
+    if(await _networkInfo.isConnected ){
+      try{
+        final fileName = await _authRemoteDataSource.uploadImage(image);
+        return Right(fileName);
+      }catch (e){
+        return Left(ApiFailure(message: e.toString()));
+      }
+    }else{
+      return Left(ApiFailure(message: "No internet connection"));
     }
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:match_aura/features/auth/domain/usecases/login_usecase.dart';
 import 'package:match_aura/features/auth/domain/usecases/register_user_usecase.dart';
+import 'package:match_aura/features/auth/domain/usecases/upload_image_usecase.dart';
 import 'package:match_aura/features/auth/presentation/state/auth_state.dart';
 
 final authViewModelProvider = NotifierProvider<AuthViewModel,AuthState>(
@@ -9,11 +12,13 @@ final authViewModelProvider = NotifierProvider<AuthViewModel,AuthState>(
 class AuthViewModel extends Notifier<AuthState>{
   late final RegisterUserUsecase _registerUserUsecase;
   late final LoginUsecase _loginUsecase;
+  late final UploadPhotoUsecase _uploadPhotoUsecase;
   
   @override
   AuthState build() {
     _registerUserUsecase = ref.read(registerUserUsecaseProvider);
     _loginUsecase = ref.read(loginUsecaseProvider);
+    _uploadPhotoUsecase = ref.read(uploadPhotoUsecaseProvider);
     return AuthState();
   }
   
@@ -25,7 +30,6 @@ class AuthViewModel extends Notifier<AuthState>{
     required String password
   })async{
     state = state.copyWith(status: AuthStatus.loading);
-    await Future.delayed(Duration(seconds: 2));
     final params = RegisterUserParams(
       fullName: fullName,
        email: email,
@@ -33,20 +37,21 @@ class AuthViewModel extends Notifier<AuthState>{
         username: username,
         password: password
         );
-        final result = await _registerUserUsecase(params);
-        result.fold(
-          (failure){
-            state = state.copyWith(
-              status: AuthStatus.error,
-              errorMessage: failure.message
-            );
-        }, (isRegistered){
-          if(isRegistered){
-            state = state.copyWith(
-              status: AuthStatus.registered
-            );
-          }
-        });
+    final result = await _registerUserUsecase(params);
+    
+    result.fold(
+      (failure){
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message
+        );
+    }, (isRegistered){
+      if(isRegistered){
+        state = state.copyWith(
+          status: AuthStatus.registered
+        );
+      }
+    });
   }
 
   Future<void> login({
@@ -68,5 +73,27 @@ class AuthViewModel extends Notifier<AuthState>{
         authEntity:authEntity);
       
     });
+  }
+
+  Future<String?> uploadPhoto(File photo) async {
+    state = state.copyWith(status: AuthStatus.loading);
+
+    final result = await _uploadPhotoUsecase(photo);
+
+    return result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        );
+        return null;
+      },
+      (url) {
+        state = state.copyWith(
+          uploadedPhotoUrl: url,
+        );
+        return url;
+      },
+    );
   }
 }

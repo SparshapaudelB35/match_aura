@@ -50,6 +50,8 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   connectivity_plus: ^7.0.0
   flutter_secure_storage: ^10.0.0
+  permission_handler: ^12.0.1
+  image_picker: ^1.2.1
 
 
 dev_dependencies:
@@ -62,7 +64,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
-
+  flutter_launcher_icons: ^0.14.4
+  mocktail: ^0.3.0
+  test_cov_console: ^0.2.2
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -107,3 +111,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  ios: "AppIcon"
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

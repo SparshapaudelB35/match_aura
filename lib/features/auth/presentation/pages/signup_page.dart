@@ -54,7 +54,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     }
 
     if (_formKey.currentState!.validate()) {
-      ref.read(authViewModelProvider.notifier)
+      await ref.read(authViewModelProvider.notifier)
       .register(fullName: _nameController.text,
        email: _emailController.text,
         username: _nameController.text.trim().split('@').first,
@@ -75,6 +75,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         SnackbarUtils.showError(context, next.errorMessage ?? 'Registration Failed');
       }else if(next.status== AuthStatus.registered){
         SnackbarUtils.showSuccess(context, next.errorMessage ?? 'Registration Sucessfull');
+        AppRoutes.push(context, const LoginPage());
       }
     });
 
